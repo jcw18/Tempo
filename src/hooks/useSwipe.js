@@ -2,7 +2,7 @@ import { useState, useRef, useCallback } from 'react';
 
 const THRESHOLD = 60;
 
-export function useSwipe(onSwipeLeft) {
+export function useSwipe(onSwipeLeft, onSwipeRight) {
   const [offset, setOffset] = useState(0);
   const [exitDir, setExitDir] = useState(null);
   const startX = useRef(0);
@@ -27,8 +27,7 @@ export function useSwipe(onSwipeLeft) {
 
     if (isHorizontal.current) {
       e.preventDefault();
-      // Only allow dragging left (negative offset)
-      setOffset(Math.min(0, dx));
+      setOffset(dx);
     }
   }, []);
 
@@ -44,10 +43,17 @@ export function useSwipe(onSwipeLeft) {
         setExitDir(null);
         setOffset(0);
       }, 250);
+    } else if (offset > THRESHOLD) {
+      setExitDir('right');
+      setTimeout(() => {
+        onSwipeRight?.();
+        setExitDir(null);
+        setOffset(0);
+      }, 250);
     } else {
       setOffset(0);
     }
-  }, [offset, onSwipeLeft]);
+  }, [offset, onSwipeLeft, onSwipeRight]);
 
   const handlers = { onTouchStart, onTouchMove, onTouchEnd };
 
@@ -57,6 +63,10 @@ export function useSwipe(onSwipeLeft) {
 
   if (exitDir === 'left') {
     transform = 'translateX(-110%)';
+    transition = 'transform 0.25s ease-in, opacity 0.25s ease-in';
+    opacity = 0;
+  } else if (exitDir === 'right') {
+    transform = 'translateX(110%)';
     transition = 'transform 0.25s ease-in, opacity 0.25s ease-in';
     opacity = 0;
   } else if (offset !== 0) {
