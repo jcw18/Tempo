@@ -1,0 +1,57 @@
+export const foamRollingRoutine = {
+  title: 'Post-Run Foam Rolling',
+  duration: '15 min',
+  sections: [{
+    name: 'Foam Rolling',
+    exercises: [
+      {
+        name: 'Calves',
+        prescription: '2 min each leg',
+        rest: null,
+        isTimed: true,
+        timerDuration: 240,
+        howTo: 'Sit on the floor with the foam roller under one calf. Cross your other leg on top for extra pressure. Roll from just above your ankle to just below your knee. Rotate your leg slightly inward and outward to hit the inner and outer calf. Your calves take the most impact during running, so give them extra attention.',
+      },
+      {
+        name: 'Quads',
+        prescription: '2 min each leg',
+        rest: null,
+        isTimed: true,
+        timerDuration: 240,
+        howTo: 'Lie face down with the foam roller under the front of one thigh. Roll from just above your knee to the top of your thigh near your hip. Shift your weight slightly left and right to hit the inner and outer quad. If you find a particularly tight spot, bend and straighten your knee a few times while holding pressure on it.',
+      },
+      {
+        name: 'IT Band',
+        prescription: '1.5 min each leg',
+        rest: null,
+        isTimed: true,
+        timerDuration: 180,
+        howTo: 'Lie on your side with the roller under the outside of your thigh, between your hip and knee. Roll slowly along the length. This is often the most painful area — that\'s normal. If it\'s too intense, stack your other leg in front for support to reduce pressure. A tight IT band is one of the most common causes of knee pain in runners.',
+      },
+      {
+        name: 'Hamstrings',
+        prescription: '1.5 min each leg',
+        rest: null,
+        isTimed: true,
+        timerDuration: 180,
+        howTo: 'Sit on the roller with it under the back of one thigh. Roll from just above the back of your knee up to the bottom of your glute. Cross the other leg on top for more pressure. Rotate your leg inward and outward to cover the full width of the muscle.',
+      },
+      {
+        name: 'Glutes',
+        prescription: '1 min each side',
+        rest: null,
+        isTimed: true,
+        timerDuration: 120,
+        howTo: 'Sit on the roller with one ankle crossed over the opposite knee (figure-4 position). Lean toward the crossed side and roll around the glute area. You can also use a lacrosse ball or tennis ball here for more targeted pressure on deep knots.',
+      },
+      {
+        name: 'Hip Flexors',
+        prescription: '1 min each side',
+        rest: null,
+        isTimed: true,
+        timerDuration: 120,
+        howTo: 'Lie face down with the roller positioned at the front of your hip, just below your hip bone. Roll gently in small movements. Tight hip flexors are common in runners and can affect your stride length and running form. Be gentle here — this area can be sensitive.',
+      },
+    ],
+  }],
+};
