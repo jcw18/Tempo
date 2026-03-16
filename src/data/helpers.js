@@ -72,26 +72,54 @@ export function buildCardDeck(workout) {
 
   workout.sections.forEach((section) => {
     const exercises = section.exercises || [];
-    for (let i = 0; i < exercises.length; i++) {
+    let i = 0;
+    while (i < exercises.length) {
       const ex = exercises[i];
-      const isSuperset = !!ex.supersetWith;
       const nextEx = exercises[i + 1];
-      const nextIsPartner = nextEx && nextEx.supersetWith === ex.name;
+      const isSuperset = ex.supersetWith && nextEx && nextEx.supersetWith === ex.name;
 
-      cards.push({
-        type: 'exercise',
-        data: {
-          ...ex,
-          sectionName: section.name,
-        },
-      });
+      if (isSuperset) {
+        // Interleave superset: A1, B1, rest, A2, B2, rest, ...
+        const setMatchA = ex.prescription.match(/^(\d+)\s*[×x]/);
+        const setsA = setMatchA ? parseInt(setMatchA[1]) : 1;
+        const setMatchB = nextEx.prescription.match(/^(\d+)\s*[×x]/);
+        const setsB = setMatchB ? parseInt(setMatchB[1]) : 1;
+        const totalSets = Math.max(setsA, setsB);
+        const rest = nextEx.rest || ex.rest;
 
-      // Add rest card: after non-superset exercises, or after the second exercise in a superset
-      if (ex.rest && !nextIsPartner) {
-        cards.push({
-          type: 'rest',
-          duration: ex.rest,
-        });
+        for (let s = 0; s < totalSets; s++) {
+          if (s < setsA) {
+            cards.push({
+              type: 'exercise',
+              data: { ...ex, sectionName: section.name, currentSet: s + 1, totalSets: setsA },
+            });
+          }
+          if (s < setsB) {
+            cards.push({
+              type: 'exercise',
+              data: { ...nextEx, sectionName: section.name, currentSet: s + 1, totalSets: setsB },
+            });
+          }
+          if (rest && s < totalSets - 1) {
+            cards.push({ type: 'rest', duration: rest });
+          }
+        }
+        i += 2; // skip both exercises
+      } else {
+        // Non-superset: expand each set into its own card
+        const setMatch = ex.prescription.match(/^(\d+)\s*[×x]/);
+        const sets = setMatch ? parseInt(setMatch[1]) : 1;
+
+        for (let s = 0; s < sets; s++) {
+          cards.push({
+            type: 'exercise',
+            data: { ...ex, sectionName: section.name, currentSet: s + 1, totalSets: sets },
+          });
+          if (ex.rest && s < sets - 1) {
+            cards.push({ type: 'rest', duration: ex.rest });
+          }
+        }
+        i++;
       }
     }
   });

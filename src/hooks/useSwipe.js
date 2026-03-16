@@ -2,9 +2,9 @@ import { useState, useRef, useCallback } from 'react';
 
 const THRESHOLD = 60;
 
-export function useSwipe(onSwipeLeft, onSwipeRight) {
+export function useSwipe(onSwipeLeft) {
   const [offset, setOffset] = useState(0);
-  const [exitDir, setExitDir] = useState(null); // 'left' | 'right' | null
+  const [exitDir, setExitDir] = useState(null);
   const startX = useRef(0);
   const startY = useRef(0);
   const isHorizontal = useRef(null);
@@ -27,7 +27,8 @@ export function useSwipe(onSwipeLeft, onSwipeRight) {
 
     if (isHorizontal.current) {
       e.preventDefault();
-      setOffset(dx);
+      // Only allow dragging left (negative offset)
+      setOffset(Math.min(0, dx));
     }
   }, []);
 
@@ -43,31 +44,19 @@ export function useSwipe(onSwipeLeft, onSwipeRight) {
         setExitDir(null);
         setOffset(0);
       }, 250);
-    } else if (offset > THRESHOLD) {
-      setExitDir('right');
-      setTimeout(() => {
-        onSwipeRight?.();
-        setExitDir(null);
-        setOffset(0);
-      }, 250);
     } else {
       setOffset(0);
     }
-  }, [offset, onSwipeLeft, onSwipeRight]);
+  }, [offset, onSwipeLeft]);
 
   const handlers = { onTouchStart, onTouchMove, onTouchEnd };
 
-  // During drag: follow finger. On commit: slide fully off screen.
   let transform;
   let transition = 'none';
   let opacity = 1;
 
   if (exitDir === 'left') {
     transform = 'translateX(-110%)';
-    transition = 'transform 0.25s ease-in, opacity 0.25s ease-in';
-    opacity = 0;
-  } else if (exitDir === 'right') {
-    transform = 'translateX(110%)';
     transition = 'transform 0.25s ease-in, opacity 0.25s ease-in';
     opacity = 0;
   } else if (offset !== 0) {

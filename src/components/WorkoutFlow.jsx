@@ -12,21 +12,16 @@ export default function WorkoutFlow({ workout, cards, date, onComplete, onBack, 
     setCurrentIndex((i) => Math.min(i + 1, cards.length - 1));
   }, [cards.length]);
 
-  const goPrev = useCallback(() => {
-    setCurrentIndex((i) => Math.max(i - 1, 0));
-  }, []);
+  const { handlers, style } = useSwipe(goNext);
 
-  const { handlers, style } = useSwipe(goNext, goPrev);
-
-  // Keyboard support for desktop
+  // Keyboard support for desktop (forward only)
   useEffect(() => {
     const handleKey = (e) => {
-      if (e.key === 'ArrowLeft') goPrev();
       if (e.key === 'ArrowRight') goNext();
     };
     window.addEventListener('keydown', handleKey);
     return () => window.removeEventListener('keydown', handleKey);
-  }, [goNext, goPrev]);
+  }, [goNext]);
 
   const card = cards[currentIndex];
   if (!card) return null;
