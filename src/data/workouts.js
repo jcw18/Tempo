@@ -453,11 +453,11 @@ export const gymWorkouts = {
 };
 
 export const dayLabels = {
-  monday: 'Chest, Abs',
-  tuesday: 'Back, Glutes',
+  monday: 'Chest Abs',
+  tuesday: 'Back Glutes',
   wednesday: 'Legs',
-  thursday: 'Shoulders, Arms',
-  friday: 'Back, Abs',
+  thursday: 'Shoulder Arms',
+  friday: 'Back Abs',
   saturday: 'Sprints',
   sunday: 'Long Run',
 };
