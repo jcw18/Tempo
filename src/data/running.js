@@ -78,8 +78,8 @@ function buildTimeTrial() {
 }
 
 function getSaturdayExercises(week) {
-  // Special weeks
-  if (week === 18 || week === 33) return buildTimeTrial();
+  // Special weeks: time trials at 12, 18, 33 and sub-23 attempt at 36
+  if (week === 12 || week === 18 || week === 33 || week === 36) return buildTimeTrial();
 
   // Phase 1: weeks 1-12
   if (week <= 4) return buildIntervalWorkout(6, 0.25, 8.0, 90);
@@ -108,7 +108,6 @@ function getSundayDistance(week) {
   if (week <= 8) return 4.0;
   if (week <= 12) return 4.5;
   if (week <= 24) return week <= 18 ? 4.5 : 5.0;
-  if (week >= 35) return 3.0; // taper
   return 5.0;
 }
 
