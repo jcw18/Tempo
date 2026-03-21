@@ -2,10 +2,39 @@ import { useState } from 'react';
 import Timer from './Timer';
 import MuscleIcon from './MuscleIcon';
 
-// Slug helper: "Barbell Bench Press" → "barbell-bench-press"
-function toSlug(name) {
-  return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-}
+const EXERCISE_IMAGES = {
+  'Barbell Bench Press': 'barbell bench press.webp',
+  'Hanging Leg Raises': 'hanging leg raises.webp',
+  'Dips': 'dips.webp',
+  'Cable Woodchops': 'cable wood chop.gif',
+  'Incline Dumbbell Press': 'incline dumbell press.webp',
+  'Hanging Windshield Wipers': 'windshield wipers.webp',
+  'High-to-Low Cable Flyes': 'high to low cable flyes.webp',
+  'Pull-ups': 'pull ups.webp',
+  'Barbell Hip Thrusts': 'barbell hip thrust.png',
+  'Seated Cable Rows': 'seated cable row.webp',
+  'Bulgarian Split Squats': 'bulgarian split squat.jpg',
+  'Face Pulls': 'face pulls.jpeg',
+  'Cable Kickbacks': 'cable kickback.webp',
+  'Barbell Back Squats': 'barbell back squat.webp',
+  'Romanian Deadlifts (RDLs)': 'romanian deadlift.webp',
+  'Walking Lunges': 'walking lunges.webp',
+  'Lying Hamstring Curls': 'hamstring curl.webp',
+  'Jump Squats': 'jump squat.webp',
+  'Seated Calf Raises': 'seated calf raise.webp',
+  'Overhead Press': 'overhead press.jpg',
+  'Dumbbell Curls': 'dumbbell curl.gif',
+  'Lateral Raises': 'lateral raises.webp',
+  'Hammer Curls': 'hammer curls.webp',
+  'Rear Delt Flyes': 'rear delt fly.webp',
+  'Shrugs': 'shrugs.webp',
+  'Close-Grip Push-ups': 'close grip push ups.webp',
+  'Back Extensions': 'back extension.webp',
+  'Reverse Hyperextensions': 'reverse hyperextension.webp',
+  'Rack Pulls': 'rack pulls.webp',
+  'Pallof Press': 'pallof press.webp',
+  'Hanging Knee Tucks with Twist': 'hanging knee twist.webp',
+};
 
 const GRADIENTS = [
   'from-indigo-600 to-purple-700',
@@ -21,8 +50,8 @@ const GRADIENTS = [
 export default function ExerciseCard({ exercise, index, isRecovery }) {
   const gradient = GRADIENTS[index % GRADIENTS.length];
   const [imgError, setImgError] = useState(false);
-  const imageSlug = toSlug(exercise.name);
-  const imagePath = `/exercise-images/${imageSlug}.jpg`;
+  const imageFile = EXERCISE_IMAGES[exercise.name];
+  const imagePath = imageFile ? `/exercise-images/${imageFile}` : null;
 
   return (
     <div className={`h-full w-full bg-gradient-to-br ${gradient} flex flex-col`}>
@@ -73,20 +102,20 @@ export default function ExerciseCard({ exercise, index, isRecovery }) {
           </div>
         )}
 
-        {/* Exercise image */}
-        {!imgError && (
-          <div className="rounded-xl overflow-hidden mb-3">
-            <img src={imagePath} alt={exercise.name}
-              className="w-full h-40 object-cover rounded-xl"
-              onError={() => setImgError(true)} />
-          </div>
-        )}
-
         {/* How to do it */}
         {exercise.howTo && (
           <div className="bg-black/20 rounded-xl p-4 mt-2">
             <p className="text-white/60 text-xs font-medium uppercase tracking-wider mb-2">How to do it</p>
             <p className="text-white/85 text-sm leading-relaxed">{exercise.howTo}</p>
+          </div>
+        )}
+
+        {/* Exercise image */}
+        {imagePath && !imgError && (
+          <div className="mt-3 rounded-xl overflow-hidden">
+            <img src={imagePath} alt={exercise.name}
+              className="w-full object-contain max-w-full"
+              onError={() => setImgError(true)} />
           </div>
         )}
       </div>
