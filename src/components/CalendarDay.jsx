@@ -32,7 +32,7 @@ export default function CalendarDay({ date, isToday, isComplete, isVacation, onC
       <span className={`text-sm font-medium ${isToday ? 'text-cyan-400' : 'text-white/80'}`}>
         {dayNum}
       </span>
-      <span className="text-[10px] text-white/40 leading-tight">{label}</span>
+      <span className="text-[10px] text-white/40 leading-tight text-center">{label}</span>
 
       {/* Checkmark overlay */}
       {isComplete && (
