@@ -459,5 +459,5 @@ export const dayLabels = {
   thursday: 'Shoulder Arms',
   friday: 'Back Abs',
   saturday: 'Sprints',
-  sunday: 'Long Run',
+  sunday: 'Run',
 };
